@@ -37,8 +37,7 @@
   (multiple-value-bind (stacks insns) (get-nums)
     (labels ((move-crate (amt src dest)
 	       (when (> amt 0)
-		 (let ((crate (car (aref stacks src))))
-		   (setf (aref stacks src) (cdr (aref stacks src)))
+		 (let ((crate (pop (aref stacks src))))
 		   (push crate (aref stacks dest))
 		   (move-crate (1- amt) src dest))))
 	     (helper (insns)
@@ -58,10 +57,7 @@
 		(lambda (crate) (push crate (aref stacks dest)))
 		(reverse
 		 (loop for i from 1 to amt
-		       :collect
-		       (let ((crate (car (aref stacks src))))
-			 (setf (aref stacks src) (cdr (aref stacks src)))
-			 crate)))))
+		       :collect (pop (aref stacks src))))))
 	     (helper (insns)
 	       (when insns
 		 (destructuring-bind (amount src dest) (car insns)

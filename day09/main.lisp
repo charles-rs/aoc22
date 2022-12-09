@@ -19,8 +19,8 @@
 
 (defun catch-up (head tail)
   (if (= (reduce '+ (mapcar (compose 'abs '-) head tail)) 4)
-      (mapcar (lambda (a b) (/ (+ a b) 2)) head tail)
-      (if (= (apply 'max (mapcar (lambda (a b) (abs (- a b))) head tail)) 2)
+      (mapcar (compose (curry '/ 2) '+) head tail)
+      (if (= (apply 'max (mapcar (compose 'abs '-) head tail)) 2)
 	  (cond
 	    ((= (- (car tail) (car head)) 2)
 	     (list (1- (car tail)) (cadr head)))
